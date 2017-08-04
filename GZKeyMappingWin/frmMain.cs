@@ -46,6 +46,9 @@ namespace GZKeyboardExtension
         /// </summary>
         int KEYEVENTF_KEYUP = 0x02;
 
+
+        bool enable;
+
         /// <summary>   
         /// 客户端键盘捕捉事件.   
         /// </summary>   
@@ -60,31 +63,56 @@ namespace GZKeyboardExtension
 
             //Keys key = (Keys)hookStruct.vkCode;
             //string str = $"你按下:{Control.ModifierKeys}({(int)Control.ModifierKeys }) + {key}({(int)key})";
-            //addLog(str);
+            ////addLog(str);
             //addLog($"vkCode：{hookStruct.vkCode}  scanCode：{hookStruct.scanCode}  flags：{hookStruct.flags}  time：{hookStruct.time}  dwExtraInfo：{hookStruct.dwExtraInfo}");
+
+            //if (hookStruct.vkCode == (int)Keys.LWin)
+            //{
+            //    enable = hookStruct.flags == 1;
+            //    return;
+            //}
 
             if (hookStruct.flags > 0)
             {
-                //addLog("返回了");
                 return;
             }
-            //if (hookStruct.vkCode == (int)Keys.LWin)
-            //{
-            //    keybd_event((int)Keys.LWin, 0, KEYEVENTF_KEYUP, 0);
-            //}
-
             //if (hookStruct.vkCode == (int)Keys.OemOpenBrackets)
             //{
-            //    keybd_event((int)Keys.OemOpenBrackets, 0, KEYEVENTF_KEYUP, 0);
-            //    handle = true;
-            //    return;
+            //    addLog("Home");
+            //    keybd_event((int)Keys.LWin, 0, KEYEVENTF_KEYUP, 0);
+            //    keybd_event((int)Keys.Home, 0, KEYEVENTF_KEYDOWN, 0);
+            //    keybd_event((int)Keys.Home, 0, KEYEVENTF_KEYUP, 0);
             //}
-            //richTextBox1.AppendText(str + "\r\n");
-
+            //if (hookStruct.vkCode == (int)Keys.Oem6)
+            //{
+            //    addLog("End");
+            //    keybd_event((int)Keys.LWin, 0, KEYEVENTF_KEYUP, 0);
+            //    keybd_event((int)Keys.End, 0, KEYEVENTF_KEYDOWN, 0);
+            //    keybd_event((int)Keys.End, 0, KEYEVENTF_KEYUP, 0);
+            //}
+            //return;
             //按键映射参见:http://www.cppblog.com/ztwaker/archive/2006/08/23/11614.html
 
             //Control+Shift+alt+] 选择整行内容
             if (Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt) && hookStruct.vkCode == (int)Keys.OemOpenBrackets)
+            {
+                addLog("END→Shift+Home 选择一整行，从行尾到行首");
+                keybd_event((int)Keys.Oem6, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.Menu, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.End, 0, KEYEVENTF_KEYDOWN, 0);
+                keybd_event((int)Keys.End, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.Home, 0, KEYEVENTF_EXTENDEDKEY, 0);
+                keybd_event((int)Keys.Home, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYDOWN, 0);
+                keybd_event((int)Keys.Menu, 0, KEYEVENTF_KEYDOWN, 0);
+
+                handle = true;
+                return;
+                
+            }
+            //Control+Shift+alt+] 选择整行内容
+            if (Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt) && hookStruct.vkCode == (int)Keys.Oem6)
             {
                 addLog("Home→Shift+End 选择一整行，从行首到行尾");
                 //addLog("映射为SHIFT+HOME键");
@@ -103,23 +131,6 @@ namespace GZKeyboardExtension
                 keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYDOWN, 0);
                 keybd_event((int)Keys.Menu, 0, KEYEVENTF_KEYDOWN, 0);
                 //addLog("结束");
-                handle = true;
-                return;
-            }
-            //Control+Shift+alt+] 选择整行内容
-            if (Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt) && hookStruct.vkCode == (int)Keys.Oem6)
-            {
-                addLog("END→Shift+Home 选择一整行，从行尾到行首");
-                keybd_event((int)Keys.Oem6, 0, KEYEVENTF_KEYUP, 0);
-                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYUP, 0);
-                keybd_event((int)Keys.Menu, 0, KEYEVENTF_KEYUP, 0);
-                keybd_event((int)Keys.End, 0, KEYEVENTF_KEYDOWN, 0);
-                keybd_event((int)Keys.End, 0, KEYEVENTF_KEYUP, 0);
-                keybd_event((int)Keys.Home, 0, KEYEVENTF_EXTENDEDKEY, 0);
-                keybd_event((int)Keys.Home, 0, KEYEVENTF_KEYUP, 0);
-                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYDOWN, 0);
-                keybd_event((int)Keys.Menu, 0, KEYEVENTF_KEYDOWN, 0);
-
                 handle = true;
                 return;
             }
