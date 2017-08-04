@@ -50,6 +50,7 @@
             this.menu_About = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_CloseConsole = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_ShowConsole = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -211,10 +212,11 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btn_ShowMain,
             this.menu_About,
+            this.menu_ShowConsole,
             this.menu_CloseConsole,
             this.btn_Exit});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(199, 149);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(199, 177);
             // 
             // btn_ShowMain
             // 
@@ -242,8 +244,14 @@
             this.menu_CloseConsole.Name = "menu_CloseConsole";
             this.menu_CloseConsole.Size = new System.Drawing.Size(198, 28);
             this.menu_CloseConsole.Text = "关闭控制台";
-            this.menu_CloseConsole.Visible = false;
             this.menu_CloseConsole.Click += new System.EventHandler(this.menu_CloseConsole_Click);
+            // 
+            // menu_ShowConsole
+            // 
+            this.menu_ShowConsole.Name = "menu_ShowConsole";
+            this.menu_ShowConsole.Size = new System.Drawing.Size(198, 28);
+            this.menu_ShowConsole.Text = "显示控制台";
+            this.menu_ShowConsole.Click += new System.EventHandler(this.menu_ShowConsole_Click);
             // 
             // frmMain
             // 
@@ -298,6 +306,7 @@
         private System.Windows.Forms.ToolStripMenuItem menu_About;
         private System.Windows.Forms.ToolStripMenuItem btn_Exit;
         private System.Windows.Forms.ToolStripMenuItem menu_CloseConsole;
+        private System.Windows.Forms.ToolStripMenuItem menu_ShowConsole;
     }
 }
 

@@ -28,7 +28,7 @@ namespace GZKeyboardExtension
             lblMsg.Text = "键盘映射已经启动，祝你工作愉快！！！";
 
 
-            menu_CloseConsole.Visible = GZConsole.ConsoleShow;
+            //menu_CloseConsole.Visible = GZConsole.ConsoleShow;
 
         }
 
@@ -58,30 +58,31 @@ namespace GZKeyboardExtension
 
 
 
-            Keys key = (Keys)hookStruct.vkCode;
-            string str = $"你按下:{Control.ModifierKeys}({(int)Control.ModifierKeys }) + {key}({(int)key})";
-            addLog(str);
-            addLog($"vkCode：{hookStruct.vkCode}  scanCode：{hookStruct.scanCode}  flags：{hookStruct.flags}  time：{hookStruct.time}  dwExtraInfo：{hookStruct.dwExtraInfo}");
-         
+            //Keys key = (Keys)hookStruct.vkCode;
+            //string str = $"你按下:{Control.ModifierKeys}({(int)Control.ModifierKeys }) + {key}({(int)key})";
+            //addLog(str);
+            //addLog($"vkCode：{hookStruct.vkCode}  scanCode：{hookStruct.scanCode}  flags：{hookStruct.flags}  time：{hookStruct.time}  dwExtraInfo：{hookStruct.dwExtraInfo}");
+
             if (hookStruct.flags > 0)
             {
                 //addLog("返回了");
                 return;
             }
-            if (hookStruct.vkCode == (int)Keys.LWin) {
-                keybd_event((int)Keys.LWin, 0, KEYEVENTF_KEYUP, 0);
-            }
-                
-            if (hookStruct.vkCode == (int)Keys.OemOpenBrackets)
-            {
-                keybd_event((int)Keys.OemOpenBrackets, 0, KEYEVENTF_KEYUP, 0);
-                handle = true;
-                return;
-            }
+            //if (hookStruct.vkCode == (int)Keys.LWin)
+            //{
+            //    keybd_event((int)Keys.LWin, 0, KEYEVENTF_KEYUP, 0);
+            //}
+
+            //if (hookStruct.vkCode == (int)Keys.OemOpenBrackets)
+            //{
+            //    keybd_event((int)Keys.OemOpenBrackets, 0, KEYEVENTF_KEYUP, 0);
+            //    handle = true;
+            //    return;
+            //}
             //richTextBox1.AppendText(str + "\r\n");
 
             //按键映射参见:http://www.cppblog.com/ztwaker/archive/2006/08/23/11614.html
-          
+
             //Control+Shift+alt+] 选择整行内容
             if (Control.ModifierKeys == (Keys.Control | Keys.Shift | Keys.Alt) && hookStruct.vkCode == (int)Keys.OemOpenBrackets)
             {
@@ -129,8 +130,10 @@ namespace GZKeyboardExtension
             {
                 addLog("Shift+Home从光标选择到行首");
                 keybd_event((int)Keys.OemOpenBrackets, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYUP, 0);//弹起Control
                 keybd_event((int)Keys.Home, 0, KEYEVENTF_EXTENDEDKEY, 0);
                 keybd_event((int)Keys.Home, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYDOWN, 0);//恢复按下Control
                 handle = true;
                 return;
             }
@@ -140,8 +143,10 @@ namespace GZKeyboardExtension
             {
                 addLog("Shift+END 从光标选择到行尾");
                 keybd_event((int)Keys.Oem6, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYUP, 0);//恢复按下Control
                 keybd_event((int)Keys.End, 0, KEYEVENTF_EXTENDEDKEY, 0);
                 keybd_event((int)Keys.End, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYDOWN, 0);//恢复按下Control
                 handle = true;
                 return;
             }
@@ -151,8 +156,10 @@ namespace GZKeyboardExtension
             {
                 addLog("HOME 光标移动到行首");
                 keybd_event((int)Keys.OemOpenBrackets, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYUP, 0);//弹起Control
                 keybd_event((int)Keys.Home, 0, KEYEVENTF_KEYDOWN, 0);
                 keybd_event((int)Keys.Home, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYDOWN, 0);//恢复按下Control
                 handle = true;
                 return;
             }
@@ -162,8 +169,10 @@ namespace GZKeyboardExtension
             {
                 addLog("END 光标移动到行尾");
                 keybd_event((int)Keys.Oem6, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYUP, 0);//弹起Control
                 keybd_event((int)Keys.End, 0, KEYEVENTF_KEYDOWN, 0);
                 keybd_event((int)Keys.End, 0, KEYEVENTF_KEYUP, 0);
+                keybd_event((int)Keys.ControlKey, 0, KEYEVENTF_KEYDOWN, 0);//恢复按下Control
                 handle = true;
                 return;
             }
@@ -251,6 +260,11 @@ namespace GZKeyboardExtension
         private void menu_CloseConsole_Click(object sender, EventArgs e)
         {
             GZConsole.CloseConsole();
+        }
+
+        private void menu_ShowConsole_Click(object sender, EventArgs e)
+        {
+            GZConsole.OpenConsole();
         }
     }
 }
